@@ -1,6 +1,6 @@
 Param(
-    [Parameter(Mandatory = $true, HelpMessage = "Action to take. Either 'set' to create a warp here, 'tà' changes the current directory to a given warp, 'list' to list all registered warps.")]
-    [ValidateSet("set", "to", "list")]
+    [Parameter(Mandatory = $true, HelpMessage = "Action to take.")]
+    [ValidateSet("set", "remove", "to", "list")]
     [string]
     $Action,
 
@@ -9,16 +9,24 @@ Param(
     $Name
 )
 
-$dataFilePath = "$PSScriptRoot/data.csv"
+$dataFilePath = "$PSScriptRoot/warps.csv"
 
 # Ensures that the data file exists
 if (-Not (Test-Path $dataFilePath)){
     echo "Name,Location" > $dataFilePath
 }
 
-if ($Action -eq "set"){
+function WarpSet {
     if ($Name -eq ''){
         throw "Please enter the name of your warp."
+    }
+
+    #   Ensures a warp doesn't already exist with the same name
+    $data = Import-Csv -Path $dataFilePath
+    $matchedWarp = $data | Where-Object { $_.Name -eq $Name }
+
+    if ($matchedWarp){
+        throw "Warp '$($matchedWarp.Name)' already exists."
     }
 
     $line = @(
@@ -27,7 +35,31 @@ if ($Action -eq "set"){
 
     $line | Export-Csv -Path $dataFilePath -NoTypeInformation -Append
     echo "✨ Added warp '$Name' here."
-} elseif ($Action -eq "to"){
+}
+
+function WarpRemove {
+    $data = Import-Csv -Path $dataFilePath
+
+    $newData = foreach ($line in $data) {
+        #   If no name is provided, remove the local warp.
+        if ($Name -eq ''){
+            if (-not ($line.Location -eq (Get-Location).Path)){
+                $line
+            }
+        }
+
+        #   Otherwise, remove the warp by its name
+        if (-not ($line.Name -eq $Name)) {
+            $line
+        }
+    }
+
+    $newData | Export-Csv -Path $dataFilePath -NoTypeInformation
+
+    echo "✅ Removed warp"
+}
+
+function WarpTo {
     if ($Name -eq ''){
         throw "Please enter the name of your warp."
     }
@@ -43,7 +75,9 @@ if ($Action -eq "set"){
     Set-Location $matchedWarp.Location
 
     echo "✨ Warped to $Name."
-} else {
+}
+
+function WarpList {
     echo "📖 Registered warps`n"
     $n = 0
 
@@ -56,4 +90,23 @@ if ($Action -eq "set"){
     }
 
     echo "`nTotal: $n warps."
+}
+
+switch ($Action) {
+    "set" {
+        WarpSet;
+        break
+    }
+    "remove" {
+        WarpRemove;
+        break
+    }
+    "to" {
+        WarpTo;
+        break
+    }
+    "list" {
+        WarpList;
+        break
+    }
 }
