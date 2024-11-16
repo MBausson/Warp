@@ -39,7 +39,15 @@ $ warp list
 # Total: 1 warps.
 ```
 
+## Installation
+
+This script requires Powershell to be installed on your system.  
+You can either clone the project, or simply download the `warp.ps1` file.  
+
+⚠️ Don't forget to add the the script to your PATH variable.
+
 ## Future improvements
 
 - Remove the necessity of the `to` keyword when navigating to a warp. This syntax should become possible: `warp myProject`
 - Implementation in `bash`. For now, warp requires Powershell to be installed on your system.
+- Unit testing
