@@ -12,12 +12,12 @@ Param(
 $dataFilePath = "$PSScriptRoot/warps.csv"
 
 # Ensures that the data file exists
-if (-Not (Test-Path $dataFilePath)){
-    echo "Name,Location" > $dataFilePath
+if (-Not (Test-Path $dataFilePath)) {
+    Write-Output "Name,Location" > $dataFilePath
 }
 
 function WarpSet {
-    if ($Name -eq ''){
+    if ($Name -eq '') {
         throw "Please enter the name of your warp."
     }
 
@@ -25,16 +25,16 @@ function WarpSet {
     $data = Import-Csv -Path $dataFilePath
     $matchedWarp = $data | Where-Object { $_.Name -eq $Name }
 
-    if ($matchedWarp){
+    if ($matchedWarp) {
         throw "Warp '$($matchedWarp.Name)' already exists."
     }
 
     $line = @(
-        [PSCustomObject]@{Name=$Name; Location=(Get-Location).Path}
+        [PSCustomObject]@{Name = $Name; Location = (Get-Location).Path }
     )
 
     $line | Export-Csv -Path $dataFilePath -NoTypeInformation -Append
-    echo "✨ Added warp '$Name' here."
+    Write-Output "✨ Added warp '$Name' here."
 }
 
 function WarpRemove {
@@ -42,8 +42,8 @@ function WarpRemove {
 
     $newData = foreach ($line in $data) {
         #   If no name is provided, remove the local warp.
-        if ($Name -eq ''){
-            if (-not ($line.Location -eq (Get-Location).Path)){
+        if ($Name -eq '') {
+            if (-not ($line.Location -eq (Get-Location).Path)) {
                 $line
             }
         }
@@ -56,11 +56,11 @@ function WarpRemove {
 
     $newData | Export-Csv -Path $dataFilePath -NoTypeInformation
 
-    echo "✅ Removed warp"
+    Write-Output "✅ Removed warp"
 }
 
 function WarpTo {
-    if ($Name -eq ''){
+    if ($Name -eq '') {
         throw "Please enter the name of your warp."
     }
 
@@ -68,17 +68,17 @@ function WarpTo {
 
     $matchedWarp = $data | Where-Object { $_.Name -eq $Name }
 
-    if (-Not $matchedWarp){
+    if (-Not $matchedWarp) {
         throw "Could not find the warp '$Name'"
     }
 
     Set-Location $matchedWarp.Location
 
-    echo "✨ Warped to $Name."
+    Write-Output "✨ Warped to $Name."
 }
 
 function WarpList {
-    echo "📖 Registered warps`n"
+    Write-Output "📖 Registered warps`n"
     $n = 0
 
     Import-Csv -Path $dataFilePath | ForEach-Object {
@@ -89,7 +89,7 @@ function WarpList {
         $n = $n + 1
     }
 
-    echo "`nTotal: $n warps."
+    Write-Output "`nTotal: $n warps."
 }
 
 switch ($Action) {
@@ -108,5 +108,8 @@ switch ($Action) {
     "list" {
         WarpList;
         break
+    }
+    default {
+        throw "Invalid action '$Action'."
     }
 }

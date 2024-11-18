@@ -9,16 +9,27 @@ This short powershell script addresses a recurring issue I face when programming
 *Create a warp*
 
 ```powershell
-PS C:/path/to/my/project> warp set myProject
+/path/to/my/project $ warp set myProject
 # ✨ Added warp 'myProject' here.
 ```
 
 *Navigate to a warp*
 
 ```powershell
-PS C:/another/location> warp to myProject
+/another/location $ warp to myProject
 # ✨ Warped to myProject.
-# Now, the current working directory is C:/path/to/my/project
+# Now, the current working directory is /path/to/my/project
+```
+
+*List all registered warps*
+
+```powershell
+$ warp list
+# 📖 Registered warps
+# 
+# 'myProject' ➡️ /path/to/my/project
+# 
+# Total: 1 warps.
 ```
 
 *Remove a warp*
@@ -28,16 +39,6 @@ $ warp remove myProject
 # ✅ Removed warp
 ```
 
-*List all registered warps*
-
-```powershell
-$ warp list
-# 📖 Registered warps
-# 
-# 'myProject' ➡️ C:/path/to/my/project
-# 
-# Total: 1 warps.
-```
 
 ## Installation
 
