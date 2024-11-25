@@ -72,6 +72,10 @@ function WarpTo {
         throw "Could not find the warp '$Name'"
     }
 
+    if (-Not(Test-Path $matchedWarp.Location)) {
+        throw "The destination associated with this warp is unreachable."
+    }
+
     Set-Location $matchedWarp.Location
 
     Write-Output "✨ Warped to $Name."
