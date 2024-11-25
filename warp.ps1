@@ -37,7 +37,7 @@ function WarpSet {
     Write-Output "✨ Added warp '$Name' here."
 }
 
-function WarpRemove {
+function WarpRemove($Name) {
     $data = Import-Csv -Path $dataFilePath
 
     $newData = foreach ($line in $data) {
@@ -65,15 +65,23 @@ function WarpTo {
     }
 
     $data = Import-Csv -Path $dataFilePath
-
     $matchedWarp = $data | Where-Object { $_.Name -eq $Name }
 
     if (-Not $matchedWarp) {
         throw "Could not find the warp '$Name'"
     }
 
+    #   Checks that the warp is reachable. If not asks, to remove it.
     if (-Not(Test-Path $matchedWarp.Location)) {
-        throw "The destination associated with this warp is unreachable."
+        Write-Host "❌ The destination associated with this warp is unreachable."
+
+        $shouldRemoveWarp = (Read-Host -Prompt "❔ Would you like to remove this warp (yes/no)") -match '^(y|yes|1)$'
+
+        if ($shouldRemoveWarp) {
+            WarpRemove($matchedWarp.Name)
+        }
+
+        return
     }
 
     Set-Location $matchedWarp.Location
@@ -102,7 +110,7 @@ switch ($Action) {
         break
     }
     "remove" {
-        WarpRemove;
+        WarpRemove($Name);
         break
     }
     "to" {
