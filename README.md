@@ -1,10 +1,10 @@
 # ✨Warp
 
-This short powershell script addresses a recurring issue I face when programming : **slow navigation through directories**, especially through frequently accessed directories.
+This short powershell script addresses a recurring issue I face when programming : **slow navigation to frequently used directories**.
 
-**Warp** lets you assign a name to a directory in your file system, and navigate directly to a directory via its name.
+**Warp** lets you assign an alias to a directory in your file system, to speed up the navigation to this directory.
 
-## Examples
+## Usage
 
 *Create a warp*
 
