@@ -42,9 +42,10 @@ $ warp remove myProject
 
 ## Installation
 
-This script requires Powershell to be installed on your system.  
-You can either clone the project, or simply download the `warp.ps1` file.  
+This script requires Powershell (**>= 7.1**) in order to be executed.  
+Don't forget to set powershell's **execution policy** to `RemoteSigned` (see [this](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7.5))  
 
+You can either clone the project, or simply download the `warp.ps1` file.  
 ⚠️ Don't forget to add the the script to your PATH variable.
 
 ## Future improvements
