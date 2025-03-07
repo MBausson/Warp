@@ -35,4 +35,4 @@ jobs:
         run: echo $PSVersionTable
 
       - name: Run Tests
-        run: go test ./...
+        run: go test ./... -v
