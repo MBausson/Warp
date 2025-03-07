@@ -3,21 +3,6 @@ name: Powershell tests
 on:
   push:
     branches:
-      - "*"
-
-jobs:
-  powershell_tests:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      name: PowerShell on Linux Workflow
-
-on:
-  push:
-    branches:
       - main
   pull_request:
     branches:
