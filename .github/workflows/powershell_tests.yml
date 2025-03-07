@@ -7,11 +7,23 @@ on:
 
 jobs:
   powershell_tests:
-    runs_on: windows-latest
+    runs_on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Install PowerShell on Ubuntu
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget apt-transport-https software-properties-common
+
+          wget -q "https://packages.microsoft.com/keys/microsoft.asc" -O- | sudo apt-key add -
+
+          sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list)"
+
+          sudo apt-get update
+          sudo apt-get install -y powershell
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -19,6 +31,7 @@ jobs:
           go-version: "1.22.4"
 
       - name: Verify PowerShell Installation
+        shell: pwsh
         run: pwsh -Command "$PSVersionTable"
 
       - name: Run Tests
