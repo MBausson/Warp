@@ -1,0 +1,25 @@
+name: Powershell tests
+
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  test:
+    runs_on: windows_latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22.4"
+
+      - name: Verify PowerShell Installation
+        run: pwsh -Command "$PSVersionTable"
+
+      - name: Run Tests
+        run: go test ./...
