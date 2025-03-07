@@ -13,7 +13,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install PowerShell (7.5)
+      - name: Install PowerShell (7.2.5)
         run: |
           sudo apt-get update
           sudo apt-get install -y wget apt-transport-https software-properties-common curl
@@ -23,7 +23,7 @@ jobs:
           curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list | sudo tee /etc/apt/sources.list.d/microsoft-prod.list
 
           sudo apt-get update
-          sudo apt-get install -y powershell=7.5.0.ubuntu.$(lsb_release -rs)
+          sudo apt-get install -y powershell=7.2.5-1.ubuntu.$(lsb_release -rs)
 
       - name: Set up Go
         uses: actions/setup-go@v5
