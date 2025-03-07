@@ -32,7 +32,7 @@ jobs:
 
       - name: Verify PowerShell Installation
         shell: pwsh
-        run: pwsh -Command "$PSVersionTable"
+        run: echo $PSVersionTable
 
       - name: Run Tests
         run: go test ./...
