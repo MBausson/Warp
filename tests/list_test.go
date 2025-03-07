@@ -4,6 +4,10 @@ import (
 	"testing"
 )
 
-func TestList(t *testing.T) {
-	execute("./warp.ps1 list")
+func TestTest(t *testing.T) {
+	res, err := execute("echo $PSVersionTable")
+
+	if err == nil {
+		t.Log(res)
+	}
 }
