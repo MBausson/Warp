@@ -1,4 +1,4 @@
-package warp_test
+package tests
 
 import (
 	"os/exec"
