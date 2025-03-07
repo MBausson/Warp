@@ -13,6 +13,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      name: PowerShell on Linux Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-powershell:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Install PowerShell on Ubuntu
         run: |
           sudo apt-get update
@@ -20,7 +38,7 @@ jobs:
 
           curl https://packages.microsoft.com/keys/microsoft.asc | sudo tee /etc/apt/trusted.gpg.d/microsoft.asc
 
-          sudo add-apt-repository "$(curl -s https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list)"
+          curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list | sudo tee /etc/apt/sources.list.d/microsoft-prod.list
 
           sudo apt-get update
           sudo apt-get install -y powershell
