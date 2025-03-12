@@ -1,53 +1,84 @@
 #!/bin/bash
 
-ACTIONS=("set" "remove" "to" "list")
-SCRIPT_LOCATION=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-DATA_LOCATION="$SCRIPT_LOCATION/warps.csv"
+DATA_FILE_PATH="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )/warps.csv"
 
-Action=$1
-Name=$2
+# Ensure the data file exists
+if [[ ! -f "$DATA_FILE_PATH" ]]; then
+    echo "Name,Location" > "$DATA_FILE_PATH"
+fi
 
-function validate_enum {
-    local -n enum=$1
-    local action=$2
-    
-    if [ -z $action ]; then
+warp_set() {
+    if [[ -z "$NAME" ]]; then
+        printf "Please enter the name of your warp.\n"
         return 1
     fi
     
-    for value in "${enum[@]}"; do
-        if [ $value == ${action,,} ]; then
-            return 0
-        fi
-    done
-    
-    return 1
-}
-
-# Ensures the action option contains valid actions
-if ! validate_enum ACTIONS "$1"; then
-    echo "Error"
-fi
-
-# Ensures that the data file exists
-if [ ! -f $DATA_LOCATION ]; then
-    echo "Name,Location" > $DATA_LOCATION
-fi
-
-function warp_set {
-    if [ -z $Name ]; then
-        echo "Please enter the name of your warp"
-        exit 1
+    if grep -q "^$NAME," "$DATA_FILE_PATH"; then
+        printf "Warp '$NAME' already exists.\n"
+        return 1
     fi
     
-    #   TODO: Check if warp already exists
-    
-    Location=$(pwd)
-    
-    echo "$Name,$Location" > $DATA_LOCATION
-    echo "✨ Added warp '$Name' here."
+    echo "$NAME,$PWD" >> "$DATA_FILE_PATH"
+    printf "✨ Added warp '$NAME' here.\n"
 }
 
-if [ "$Action" == "set" ]; then
-    warp_set
+warp_remove() {
+    if [[ -z "$NAME" ]]; then
+        # Remove local warp
+        awk -F, -v loc="$PWD" '$2 != loc' "$DATA_FILE_PATH" > "$DATA_FILE_PATH.tmp" && mv "$DATA_FILE_PATH.tmp" "$DATA_FILE_PATH"
+    else
+        # Remove warp by name
+        awk -F, -v name="$NAME" '$1 != name' "$DATA_FILE_PATH" > "$DATA_FILE_PATH.tmp" && mv "$DATA_FILE_PATH.tmp" "$DATA_FILE_PATH"
+    fi
+    
+    printf "✅ Removed warp\n"
+}
+
+warp_to() {
+    if [[ -z "$NAME" ]]; then
+        printf "Please enter the name of your warp.\n"
+        return 1
+    fi
+    
+    LOCATION=$(awk -F, -v name="$NAME" '$1 == name {print $2}' "$DATA_FILE_PATH")
+    
+    if [[ -z "$LOCATION" ]]; then
+        printf "Could not find the warp '$NAME'\n"
+        return 1
+    fi
+    
+    if [[ ! -d "$LOCATION" ]]; then
+        printf "❌ The destination associated with this warp is unreachable.\n"
+        read -p "❔ Would you like to remove this warp (yes/no)? " RESPONSE
+        if [[ "$RESPONSE" =~ ^(y|yes|1)$ ]]; then
+            warp_remove "$NAME"
+        fi
+        return 1
+    fi
+    
+    cd "$LOCATION" || return
+    printf "✨ Warped to $NAME.\n"
+}
+
+warp_list() {
+    printf "📖 Registered warps\n\n"
+    awk -F, 'NR>1 {print "\""$1"\" ➡️ "$2}' "$DATA_FILE_PATH"
+    printf "\nTotal: $(($(wc -l < "$DATA_FILE_PATH") - 1)) warps.\n"
+}
+
+if [[ -z "$1" ]]; then
+    printf "Usage: $0 {set|remove|to|list} [name]\n"
+    return 2
 fi
+
+ACTION="$1"
+NAME="$2"
+
+case "$ACTION" in
+    "set") warp_set;;
+    "remove") warp_remove;;
+    "to") warp_to;;
+    "list") warp_list;;
+    *) printf "Invalid action '$ACTION'.\n"; return 1;;
+esac
+
