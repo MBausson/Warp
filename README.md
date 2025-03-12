@@ -62,7 +62,7 @@ This script requires bash in order to be executed.In the following example, warp
 3. Edit your `~/.bashrc` file to include this code
 
    - ```bash
-     		 warp(){
+     warp(){
           source ~/warp.sh # Adapt this part to your installation location and/or method
       }
      ```
