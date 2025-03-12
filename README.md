@@ -32,7 +32,7 @@ $ warp list
 # Total: 1 warps.
 ```
 
-_Remove a warp _
+_Remove a warp_
 
 ```powershell
 $ warp remove myProject
