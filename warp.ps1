@@ -1,6 +1,5 @@
 Param(
-    [Parameter(Mandatory = $true, HelpMessage = "Action to take.")]
-    [ValidateSet("set", "remove", "to", "list")]
+    [Parameter(HelpMessage = "Action to take. (list|to|set|remove)")]
     [string]
     $Action,
 
@@ -8,6 +7,13 @@ Param(
     [string]
     $Name
 )
+
+if (-not $Action -and $Name) {
+    $Action = "to"
+}
+elseif (-not $Action) {
+    $Action = "list"
+}
 
 $dataFilePath = "$PSScriptRoot/warps.csv"
 
@@ -59,7 +65,7 @@ function WarpRemove($Name) {
     Write-Output "✅ Removed warp"
 }
 
-function WarpTo {
+function WarpTo($Name) {
     if ($Name -eq '') {
         throw "Please enter the name of your warp."
     }
@@ -114,7 +120,7 @@ switch ($Action) {
         break
     }
     "to" {
-        WarpTo;
+        WarpTo($Name);
         break
     }
     "list" {
@@ -122,6 +128,6 @@ switch ($Action) {
         break
     }
     default {
-        throw "Invalid action '$Action'."
+        WarpTo($Action)
     }
 }
