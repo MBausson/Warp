@@ -69,5 +69,4 @@ This script requires bash in order to be executed.In the following example, warp
 
 ## Future improvements
 
-- Remove the necessity of the `to` keyword when navigating to a warp. This syntax should become possible: `warp myProject`
-- Unit testing
+- Testing (both powershell & bash versions)
