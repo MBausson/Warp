@@ -66,19 +66,21 @@ warp_list() {
     printf "\nTotal: $(($(wc -l < "$DATA_FILE_PATH") - 1)) warps.\n"
 }
 
-if [[ -z "$1" ]]; then
-    printf "Usage: $0 {set|remove|to|list} [name]\n"
-    return 2
-fi
-
 ACTION="$1"
 NAME="$2"
+
+if [[ -z $NAME && -z $ACTION ]]; then
+    ACTION="list"
+    elif [[ -z $NAME && $ACTION != "list" ]]; then
+    NAME=$ACTION
+    ACTION="to"
+fi
 
 case "$ACTION" in
     "set") warp_set;;
     "remove") warp_remove;;
     "to") warp_to;;
     "list") warp_list;;
-    *) printf "Invalid action '$ACTION'.\n"; return 1;;
+    *) printf "Invalid action '$ACTION'.\n";;
 esac
 
