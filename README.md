@@ -2,21 +2,23 @@
 
 This short powershell script addresses a recurring issue I face when programming : **slow navigation to frequently used directories**.
 
-**Warp** lets you assign an alias to a directory in your file system, to speed up the navigation to this directory.
+**Warp** lets you assign an alias to a directory in your file system, allowing you to quickly access a given directory in your system with a simple name.
 
 ## Usage
 
 _Create a warp_
 
 ```powershell
-/path/to/my/project $ warp set myProject
+# Given we're in /path/to/my/project
+$ warp set myProject
 # ✨ Added warp 'myProject' here.
 ```
 
 _Navigate to a warp_
 
 ```powershell
-/another/location $ warp to myProject
+# Given we're in /another/location
+$ warp to myProject
 # ✨ Warped to myProject.
 # Now, the current working directory is /path/to/my/project
 ```
@@ -41,13 +43,23 @@ $ warp remove myProject
 
 ## Installation
 
+A python installation script is provided in the repository:
+
+```bash
+#  In warp's directory
+./install.py --shell <bash | powershell> --location ~
+```
+
+The Warp script will be installed at the given `location`, which defaults to your home directory (`~`).
+
+You can run this script, or also process to a manual installation described below.
+
 ### Windows
 
 This script requires Powershell (**>= 7.1**) in order to be executed.
 Don't forget to set powershell's **execution policy** to `RemoteSigned` (see [this](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7.5))
 
 ⚠️ Don't forget to add the the script to your PATH variable.
-You can either clone the project, or simply download the `warp.ps1` file.
 
 ### Linux / MacOs
 
