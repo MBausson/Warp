@@ -52,32 +52,31 @@ $ python3 ./install.py --shell <bash | powershell> --location ~
 
 The Warp script will be installed at the given `location`, which defaults to your home directory (`~`).
 
-You can run this script, or also process to a manual installation described below.
+For powershell users: ⚠️ Don't forget to set powershell's **execution policy** to `RemoteSigned` (see [this](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7.5))
+
+**If you do not want to use this script, please proceed to a manual installation described below.**
 
 ### Windows
 
-This script requires Powershell (**>= 7.1**) in order to be executed.
-Don't forget to set powershell's **execution policy** to `RemoteSigned` (see [this](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7.5))
+**Note:** This script requires Powershell (**>= 7.1**) in order to be executed.
 
-⚠️ Don't forget to add the the script to your PATH variable.
+You will need to add the script location to your `PATH`.
+
+⚠️ Don't forget to set powershell's **execution policy** to `RemoteSigned` (see [this](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7.5))
 
 ### Linux / MacOs
 
-This script requires bash in order to be executed.In the following example, warp will be installed in **user's home** (`~`). If you want to install warp somewhere else, please adapt the filepaths accordingly.
+In the following example, warp will be installed in **user's home** (`~`). If you want to install warp somewhere else, please adapt the filepaths accordingly.
 
-1. You can either clone this repository or simply download the `warp.sh` file.
-
-2. If needed, add permissions to execute `warp.sh`
-
-   - `chmod u+x warp.sh`
-
+1. Place the `warp.sh` file to a certain location, for example, your home (`~`)
+2. Add permissions to the script: `chmod u+x warp.sh`
 3. Edit your `~/.bashrc` file to include this code
 
-   - ```bash
-     warp(){
-          source ~/warp.sh # Adapt this part to your installation location and/or method
-      }
-     ```
+   ```bash
+   warp {
+        source ~/warp.sh # Adapt this part to your installation location
+    }
+   ```
 
 ## Future improvements
 
