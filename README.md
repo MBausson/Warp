@@ -47,7 +47,7 @@ A python installation script is provided in the repository:
 
 ```bash
 #  In warp's directory
-./install.py --shell <bash | powershell> --location ~
+$ python3 ./install.py --shell <bash | powershell> --location ~
 ```
 
 The Warp script will be installed at the given `location`, which defaults to your home directory (`~`).
