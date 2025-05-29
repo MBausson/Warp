@@ -47,7 +47,7 @@ A python installation script is provided in the repository:
 
 ```bash
 #  In warp's directory
-$ python3 ./install.py --shell <bash | powershell> --location ~
+$ python3 ./install.py --shell <bash | zsh | powershell> --location ~
 ```
 
 The Warp script will be installed at the given `location`, which defaults to your home directory (`~`).
@@ -68,11 +68,11 @@ You will need to add the script location to your `PATH`.
 
 ⚠️ ZSH is not fully supported, and might not work, following your configuration. 
 
-In the following example, warp will be installed in **user's home** (`~`). If you want to install warp somewhere else, please adapt the filepaths accordingly.
+In the following example, warp will be installed in **user's home** (`~`). If you want to install warp somewhere else, please adapt the filepaths accordingly.  
 
 1. Place the `warp.sh` file to a certain location, for example, your home (`~`)
 2. Add permissions to the script: `chmod u+x warp.sh`
-3. Edit your `~/.bashrc` file to include this code
+3. Edit your `~/.bashrc` (or `.zshrc` for ZSH) file to include this code
 
    ```bash
    warp {
