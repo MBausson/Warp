@@ -15,8 +15,8 @@ abs_path = lambda rel_path : os.path.abspath(os.path.expanduser(rel_path))
 parser = argparse.ArgumentParser(prog="WarpInstaller", description="Installer for the Warp script")
 parser.add_argument("-sh", "--shell",
                     required=True,
-                    choices=["bash", "powershell"],
-                    help="Type of shell used (bash, powershell)")
+                    choices=["bash", "zsh", "powershell"],
+                    help="Type of shell used (bash, zsh, powershell)")
 parser.add_argument("-loc", "--location", default="~", help="Location of the warp executable and csv file.")
 args = parser.parse_args()
 location = abs_path(args.location)
@@ -35,7 +35,7 @@ def path_backup():
 #   Bash installation
 #   1. Copy `warp.sh` to input's location
 #   2. Update user's `.bashrc` to include a 'warp' function
-def bash_install(location: str):
+def bash_install(location: str, shell_file: str):
     target_dir = abs_path(location)
     script_dir = os.path.dirname(abs_path(__file__))
     warp_src = os.path.join(script_dir, "warp.sh")
@@ -50,7 +50,7 @@ def bash_install(location: str):
 
     print(f"Copied `warp.sh` to {warp_dst}")
 
-    bashrc_path = abs_path("~/.bashrc")
+    bashrc_path = abs_path(f"~/{shell_file}")
     warp_function_code = f"""
 # Added by warp's installer ({script_dir})
 warp() {{
@@ -99,6 +99,8 @@ def powershell_install(location: str):
 
 match shell:
     case "bash":
-        bash_install(location)
+        bash_install(location, shell_file=".bashrc")
+    case "zsh":
+        bash_install(location, shell_file=".zshrc")
     case "powershell":
         powershell_install(location)

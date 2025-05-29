@@ -66,7 +66,7 @@ You will need to add the script location to your `PATH`.
 
 ### Linux / MacOs
 
-⚠️ ZSH is not yet fully supported. Using Warp with ZSH is very likely not to work.
+⚠️ ZSH is not fully supported, and might not work, following your configuration. 
 
 In the following example, warp will be installed in **user's home** (`~`). If you want to install warp somewhere else, please adapt the filepaths accordingly.
 
