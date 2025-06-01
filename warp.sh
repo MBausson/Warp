@@ -9,17 +9,17 @@ fi
 
 warp_set() {
     if [[ -z "$NAME" ]]; then
-        printf "Please enter the name of your warp.\n"
+        printf "Please enter the name of your warp\n"
         return 1
     fi
     
     if grep -q "^$NAME," "$DATA_FILE_PATH"; then
-        printf "Warp '$NAME' already exists.\n"
+        printf "Warp '$NAME' already exists\n"
         return 1
     fi
     
     echo "$NAME,$PWD" >> "$DATA_FILE_PATH"
-    printf "✨ Added warp '$NAME' here.\n"
+    printf "Warp '$NAME' added\n"
 }
 
 warp_remove() {
@@ -31,25 +31,25 @@ warp_remove() {
         awk -F, -v name="$NAME" '$1 != name' "$DATA_FILE_PATH" > "$DATA_FILE_PATH.tmp" && mv "$DATA_FILE_PATH.tmp" "$DATA_FILE_PATH"
     fi
     
-    printf "✅ Removed warp\n"
+    printf "Warp '$NAME' removed\n"
 }
 
 warp_to() {
     if [[ -z "$NAME" ]]; then
-        printf "Please enter the name of your warp.\n"
+        printf "Please enter the name of your warp\n"
         return 1
     fi
     
     LOCATION=$(awk -F, -v name="$NAME" '$1 == name {print $2}' "$DATA_FILE_PATH")
     
     if [[ -z "$LOCATION" ]]; then
-        printf "Could not find the warp '$NAME'\n"
+        printf "Warp '$NAME' not found\n"
         return 1
     fi
     
     if [[ ! -d "$LOCATION" ]]; then
-        printf "❌ The destination associated with this warp is unreachable.\n"
-        read -p "❔ Would you like to remove this warp (yes/no)? " RESPONSE
+        printf "The destination associated with this warp is unreachable.\n"
+        read -p "Would you like to remove this warp (yes/no) ? " RESPONSE
         if [[ "$RESPONSE" =~ ^(y|yes|1)$ ]]; then
             warp_remove "$NAME"
         fi
@@ -57,18 +57,17 @@ warp_to() {
     fi
     
     cd "$LOCATION" || return
-    printf "✨ Warped to $NAME.\n"
+    printf "Warped to $NAME\n"
 }
 
 warp_list() {
-    printf "📖 Registered warps\n\n"
-    awk -F, 'NR>1 {print "\""$1"\" ➡️ "$2}' "$DATA_FILE_PATH"
-    printf "\nTotal: $(($(wc -l < "$DATA_FILE_PATH") - 1)) warps.\n"
+    printf "Registered warps ($(($(wc -l < "$DATA_FILE_PATH") - 1)))\n"
+    awk -F, 'NR>1 {print "\""$1"\" -> "$2}' "$DATA_FILE_PATH"
 }
 
 ACTION="$1"
 NAME="$2"
-
+ 
 if [[ -z $NAME && -z $ACTION ]]; then
     ACTION="list"
     elif [[ -z $NAME && $ACTION != "list" ]]; then
@@ -81,6 +80,6 @@ case "$ACTION" in
     "remove") warp_remove;;
     "to") warp_to;;
     "list") warp_list;;
-    *) printf "Invalid action '$ACTION'.\n";;
+    *) printf "Invalid action '$ACTION'\n";;
 esac
 
