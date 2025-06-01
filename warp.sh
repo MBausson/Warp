@@ -65,12 +65,31 @@ warp_list() {
     awk -F, 'NR>1 {print "\""$1"\" -> "$2}' "$DATA_FILE_PATH"
 }
 
+warp_about(){
+    if [ -n "$ZSH_VERSION" ]; then
+        shell="ZSH ($ZSH_VERSION)"
+    elif [ -n "$BASH_VERSION" ]; then
+        shell="Bash ($BASH_VERSION)"
+    else
+        shell="Unknown"
+    fi
+
+    printf "Installation path: $0\n"
+    printf "OS: $OSTYPE\n"
+    printf "Shell: $shell\n"
+}
+
+if [[ "$1" == "--about" ]]; then
+    warp_about
+    return 0
+fi
+
 ACTION="$1"
 NAME="$2"
  
 if [[ -z $NAME && -z $ACTION ]]; then
     ACTION="list"
-    elif [[ -z $NAME && $ACTION != "list" ]]; then
+elif [[ -z $NAME && $ACTION != "list" ]]; then
     NAME=$ACTION
     ACTION="to"
 fi
