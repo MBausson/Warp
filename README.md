@@ -38,6 +38,15 @@ $ warp remove myProject
 # Warp 'myProject' removed
 ```
 
+_Debug command_
+
+```powershell
+$ warp --about
+# Installation path: C:\path\to\warp.ps1
+# OS: ...
+# Shell: ... (v X.X.X)
+```
+
 ## Installation
 
 A python installation script is provided in the repository:
