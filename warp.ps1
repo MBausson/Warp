@@ -108,6 +108,12 @@ function WarpList {
     }
 }
 
+function WarpAbout {
+    Write-Output "Installation path: $PSCommandPath"
+    Write-Output "OS: $($PSVersionTable.OS)"
+    Write-Output "Shell: Powershell ($($PSVersionTable.PSVersion.ToString()))"
+}
+
 switch ($Action) {
     "set" {
         WarpSet;
@@ -123,6 +129,10 @@ switch ($Action) {
     }
     "list" {
         WarpList;
+        break
+    }
+    "--about" {
+        WarpAbout;
         break
     }
     default {
