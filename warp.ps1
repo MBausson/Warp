@@ -24,7 +24,7 @@ if (-Not (Test-Path $dataFilePath)) {
 
 function WarpSet {
     if ($Name -eq '') {
-        throw "Please enter the name of your warp."
+        throw "Please enter the name of your warp"
     }
 
     #   Ensures a warp doesn't already exist with the same name
@@ -32,7 +32,7 @@ function WarpSet {
     $matchedWarp = $data | Where-Object { $_.Name -eq $Name }
 
     if ($matchedWarp) {
-        throw "Warp '$($matchedWarp.Name)' already exists."
+        throw "Warp '$($matchedWarp.Name)' already exists"
     }
 
     $line = @(
@@ -40,7 +40,7 @@ function WarpSet {
     )
 
     $line | Export-Csv -Path $dataFilePath -NoTypeInformation -Append
-    Write-Output "✨ Added warp '$Name' here."
+    Write-Output "Warp '$Name' added"
 }
 
 function WarpRemove($Name) {
@@ -62,26 +62,26 @@ function WarpRemove($Name) {
 
     $newData | Export-Csv -Path $dataFilePath -NoTypeInformation
 
-    Write-Output "✅ Removed warp"
+    Write-Output "Warp '$Name' removed"
 }
 
 function WarpTo($Name) {
     if ($Name -eq '') {
-        throw "Please enter the name of your warp."
+        throw "Please enter the name of your warp"
     }
 
     $data = Import-Csv -Path $dataFilePath
     $matchedWarp = $data | Where-Object { $_.Name -eq $Name }
 
     if (-Not $matchedWarp) {
-        throw "Could not find the warp '$Name'"
+        throw "Warp '$Name' not found"
     }
 
     #   Checks that the warp is reachable. If not asks, to remove it.
     if (-Not(Test-Path $matchedWarp.Location)) {
-        Write-Host "❌ The destination associated with this warp is unreachable."
+        Write-Host "The destination associated with this warp is unreachable."
 
-        $shouldRemoveWarp = (Read-Host -Prompt "❔ Would you like to remove this warp (yes/no)") -match '^(y|yes|1)$'
+        $shouldRemoveWarp = (Read-Host -Prompt "Would you like to remove this warp (yes/no) ?") -match '^(y|yes|1)$'
 
         if ($shouldRemoveWarp) {
             WarpRemove($matchedWarp.Name)
@@ -92,22 +92,20 @@ function WarpTo($Name) {
 
     Set-Location $matchedWarp.Location
 
-    Write-Output "✨ Warped to $Name."
+    Write-Output "Warped to $Name"
 }
 
 function WarpList {
-    Write-Output "📖 Registered warps`n"
-    $n = 0
+    $lineCount = Get-Content $dataFilePath | Measure-Object | Select-Object -expand Count
+    Write-Output "Registered warps ($($lineCount - 1))"
 
     Import-Csv -Path $dataFilePath | ForEach-Object {
         $name = $_.Name
         $location = $_.Location
 
-        Write-Host "'$name' ➡️ $location"
+        Write-Host "'$name' -> $location"
         $n = $n + 1
     }
-
-    Write-Output "`nTotal: $n warps."
 }
 
 switch ($Action) {
