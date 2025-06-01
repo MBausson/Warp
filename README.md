@@ -11,7 +11,7 @@ _Create a warp_
 ```powershell
 # Given we're in /path/to/my/project
 $ warp set myProject
-# ✨ Added warp 'myProject' here.
+# Warp 'myProject' added
 ```
 
 _Navigate to a warp_
@@ -19,7 +19,7 @@ _Navigate to a warp_
 ```powershell
 # Given we're in /another/location
 $ warp to myProject
-# ✨ Warped to myProject.
+# Warped to 'myProject'
 # Now, the current working directory is /path/to/my/project
 ```
 
@@ -27,18 +27,15 @@ _List all registered warps_
 
 ```powershell
 $ warp list
-# 📖 Registered warps
-#
-# 'myProject' ➡️ /path/to/my/project
-#
-# Total: 1 warps.
+# Registered warps (1)
+# 'myProject' -> /path/to/my/project
 ```
 
 _Remove a warp_
 
 ```powershell
 $ warp remove myProject
-# ✅ Removed warp
+# Warp 'myProject' removed
 ```
 
 ## Installation
@@ -66,9 +63,9 @@ You will need to add the script location to your `PATH`.
 
 ### Linux / MacOs
 
-⚠️ ZSH is not fully supported, and might not work, following your configuration. 
+⚠️ ZSH is not fully supported, and might not work, following your configuration.
 
-In the following example, warp will be installed in **user's home** (`~`). If you want to install warp somewhere else, please adapt the filepaths accordingly.  
+In the following example, warp will be installed in **user's home** (`~`). If you want to install warp somewhere else, please adapt the filepaths accordingly.
 
 1. Place the `warp.sh` file to a certain location, for example, your home (`~`)
 2. Add permissions to the script: `chmod u+x warp.sh`
